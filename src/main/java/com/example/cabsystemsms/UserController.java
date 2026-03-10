@@ -43,4 +43,21 @@ public List<Users> getAllUsers()
         this.userRepo.save(user);
         return ResponseEntity.status(HttpStatus.CREATED).body("User registered successfully");
     }
+
+  @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody Users user)
+    {
+        Users u = this.userRepo.findByEmail(user.getEmail());
+        if (u == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found");
+        }
+        
+        // Simple password comparison (in production, use bcrypt or similar)
+        if (!u.getPassword().equals(user.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+        }
+        
+        // Return user email as a simple token
+        return ResponseEntity.ok(u.getEmail());
+    }
 }
