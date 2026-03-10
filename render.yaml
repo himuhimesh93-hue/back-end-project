@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: back-end-project
+    env: java17
+    buildCommand: "./mvnw.cmd clean package -DskipTests"
+    startCommand: "java -jar target/cabsystemsms-0.0.1-SNAPSHOT.jar"
+    autoDeploy: true
+    envVars:
+      - key: PORT
+        fromService: web
